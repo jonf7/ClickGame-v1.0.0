@@ -25,10 +25,14 @@ public class MyFrame extends JFrame implements ActionListener{
     JButton exitbutton;
     JButton shop;
     JButton mainpage;
+    JLabel note;
     JLabel points;
     MyFrame(){
+        note = new JLabel();
         points = new JLabel();
-        points.setText("Just Click On The \"Click Me\" Button To Earn Points!");
+        this.add(note);
+        points.setBounds(165,50,500,50);
+        note.setText("Just Click On The \"Click Me\" Button To Earn Points!");
         exitbutton = new JButton();
         clickbutton = new JButton();
         mainpage = new JButton();
@@ -68,7 +72,7 @@ public class MyFrame extends JFrame implements ActionListener{
         buy1.setLocation(65,50);
         mainpage.setLocation(20,300);
         clickbutton.setLocation(120,150);
-        points.setBounds(25, 20 , 500 ,50);
+        note.setBounds(25, 20 , 500 ,50);
         clickbutton.setFocusPainted(false);
         exitbutton.setFocusPainted(false);
         shop.setFocusPainted(false);
@@ -80,16 +84,21 @@ public class MyFrame extends JFrame implements ActionListener{
     long clicks = 0;
     byte level = 1;
     boolean l1b = false;
+    boolean bf1 = false;
+    boolean firstshow = true;
     @Override
     public void actionPerformed(ActionEvent e) {
         if(e.getSource()==clickbutton) {
             for(byte i = 1; i <= level; i++)
                 clicks++;
             points.setText(String.valueOf(clicks));
-            if(clicks != 0){
+            if(clicks !=0 && firstshow == true){
                 Font pointsr = new Font("SansSerif", Font.BOLD, 20);
                 points.setFont(pointsr);
                 points.setBounds(165,50,500,50);
+                firstshow = false;
+                remove(note);
+                repaint();
             }
         }else if(e.getSource()==buy1 && clicks >= 10 && l1b == false){
             clicks -= 10;
@@ -119,5 +128,19 @@ public class MyFrame extends JFrame implements ActionListener{
             this.add(points);
             repaint();
         }
+        if (clicks == 10 && bf1 == false) {
+            this.add(note);
+            note.setBounds(110 ,200, 300, 50);
+            note.setText("Nice u have " + clicks + " points!");
+            Timer timer = new Timer();
+            TimerTask messagetask = new TimerTask() {
+                public void run() {
+                    remove(note);
+                    repaint();
+                    bf1 = true;
+                }
+            };
+            timer.scheduleAtFixedRate(messagetask, 4000, 4000);
+        }
     }
-}
+    }
