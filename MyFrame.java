@@ -22,12 +22,14 @@ import java.awt.*;
 public class MyFrame extends JFrame implements ActionListener{
     JButton clickbutton;
     JButton buy1;
+    JLabel buy1t;
     JButton exitbutton;
     JButton shop;
     JButton mainpage;
     JLabel note;
     JLabel points;
     MyFrame(){
+        buy1t = new JLabel();
         note = new JLabel();
         points = new JLabel();
         this.add(note);
@@ -50,7 +52,8 @@ public class MyFrame extends JFrame implements ActionListener{
         shop.setBounds(200, 100, 100, 50);
         mainpage.setBounds(200, 100, 150, 50);
         buy1 = new JButton();
-        buy1.setBounds(200, 100, 200, 50);
+        buy1t.setBounds(150, 30, 130, 50);
+        buy1.setBounds(25, 30, 115, 50);
         clickbutton.addActionListener(this);
         exitbutton.addActionListener(this);
         buy1.addActionListener(this);
@@ -60,8 +63,8 @@ public class MyFrame extends JFrame implements ActionListener{
         this.setVisible(true);
         this.getContentPane().setBackground(Color.WHITE);
         this.setResizable(false);
-        buy1.setLocation(180,20);
-        buy1.setText("level 2 (10 points)");
+        buy1t.setText("Cost: 100 points");
+        buy1.setText("Double Click!");
         exitbutton.setBounds(200,100,100,50);
         exitbutton.setLocation(215,300);
         exitbutton.setText("Exit!");
@@ -69,13 +72,13 @@ public class MyFrame extends JFrame implements ActionListener{
         clickbutton.setText("Click me");
         mainpage.setText("Back From Shop");
         shop.setLocation(20,300);
-        buy1.setLocation(65,50);
         mainpage.setLocation(20,300);
         clickbutton.setLocation(120,150);
         note.setBounds(25, 20 , 500 ,50);
         clickbutton.setFocusPainted(false);
         exitbutton.setFocusPainted(false);
         shop.setFocusPainted(false);
+        buy1.addActionListener(this);
         this.add(shop);
         this.add(exitbutton);
         this.add(clickbutton);
@@ -83,7 +86,6 @@ public class MyFrame extends JFrame implements ActionListener{
     }
     long clicks = 0;
     byte level = 1;
-    boolean l1b = false;
     boolean bf1 = false;
     boolean firstshow = true;
     @Override
@@ -100,12 +102,12 @@ public class MyFrame extends JFrame implements ActionListener{
                 remove(note);
                 repaint();
             }
-        }else if(e.getSource()==buy1 && clicks >= 10 && l1b == false){
+        }else if(e.getSource()==buy1 && clicks >= 10){
             clicks -= 10;
             level = 2;
             buy1.setText("Bought");
-            l1b = true;
             buy1.setEnabled(false);
+            points.setText(String.valueOf(clicks));
             repaint();
         }else if(e.getSource()==exitbutton){
             System.exit(0);
@@ -116,7 +118,8 @@ public class MyFrame extends JFrame implements ActionListener{
             buy1.setBackground(Color.darkGray);
             buy1.setForeground(Color.white);
             buy1.setFocusPainted(false);
-            mainpage. setFocusPainted(false);
+            mainpage.setFocusPainted(false);
+            this.add(buy1t);
             this.add(buy1);
             this.add(mainpage);
             repaint();
